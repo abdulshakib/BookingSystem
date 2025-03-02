@@ -43,11 +43,9 @@ namespace BookingSystem.API.Controllers
             return Ok(bookings);
         }
 
-        // Endpoint to cancel a booking based on the booking ID
         [HttpDelete("cancel/{bookingId}")]
         public async Task<IActionResult> CancelBooking(int bookingId)
         {
-            // Send the command to MediatR to handle it
             await _mediator.Send(new CancelBookingCommand { BookingId = bookingId });
 
             return Ok("Booking canceled successfully.");

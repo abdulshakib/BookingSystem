@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace BookingSystem.Application.Query
 {
-    public class GetBookingsByMemberQuery : IRequest<List<Booking>>
+    public class GetAllInventoryQuery : IRequest<List<InventoryItem>>
     {
-        public int MemberId { get; set; }
+       
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BookingSystem.Application.Commands.InventoryItem;
+using BookingSystem.Application.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,20 @@ namespace BookingSystem.API.Controllers
         public InventoryController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllInventory()
+        {
+            var query = new GetAllInventoryQuery();
+            var result = await _mediator.Send(query);
+
+            if (result == null || result.Count == 0)
+            {
+                return NotFound("No inventory items found.");
+            }
+
+            return Ok(result);  // Return the list of inventory items
         }
 
         [HttpPost("upload")]

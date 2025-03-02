@@ -28,7 +28,6 @@ namespace BookingSystem.Application.Handler.InventoryItem
             if (request.File == null || request.File.Length == 0)
                 throw new ArgumentException("No file uploaded.");
 
-            // Parse the CSV file
             using (var stream = new StreamReader(request.File.OpenReadStream()))
             {
                 var csvContent = await stream.ReadToEndAsync();
@@ -38,7 +37,7 @@ namespace BookingSystem.Application.Handler.InventoryItem
                     Title = columns[0],
                     Description = columns[1],
                     RemainingCount = int.Parse(columns[2]),
-                    ExpirationDate = DateTime.Parse(columns[3], CultureInfo.InvariantCulture)
+                    ExpirationDate = DateTime.ParseExact(columns[3], "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture)
                 });
 
                 foreach (var item in inventoryItems)
@@ -51,17 +50,15 @@ namespace BookingSystem.Application.Handler.InventoryItem
                         ExpirationDate = item.ExpirationDate
                     };
 
-                    // Add inventory item using the service
                     var result = await _inventoryService.AddInventoryItemAsync(inventoryItem);
                     if (result > 0)
                     {
-                        // Optionally, log success or handle the result as needed
                         Console.WriteLine("Inventory item added successfully.");
                     }
                 }
             }
 
-            return Unit.Value;  // Indicating success, as no response is required
+            return Unit.Value;  
         }
     }
 
